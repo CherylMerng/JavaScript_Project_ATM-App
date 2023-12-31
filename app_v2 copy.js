@@ -73,7 +73,7 @@ document.getElementById("withdrawBtn").onclick = function() {
 // TRANSACTION HISTORY
 
 let transactionTable = document.getElementById("transactionTable");
-let transactionId = getIdFromData();
+let transactionId = 1;
 
 function getCurrentDate() {
     let currentDate = new Date();

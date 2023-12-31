@@ -22,8 +22,6 @@ let withdrawElement = document.getElementById("withdraw");
 let withdrawAmtElement = document.getElementById("withdrawAmt");
 
 document.getElementById("depositBtn").onclick = function() {
-    removeNoTransactionRow();   // not working!!
-
     let currentBalance = parseFloat (balanceElement.innerHTML);
     depositAmt = parseFloat (depositAmtElement.value);
 
@@ -81,18 +79,23 @@ function getCurrentDate() {
     return currentDate.toLocaleDateString() + " " + currentDate.toLocaleTimeString();
 }
 
-function createTransactionItem(transactionType, amount, balance) {
-    
-    removeNoTransactionRow();
-    addTransactionToTable(transactionId, transactionType, amount, balance, getCurrentDate());
+function addNoTransactionRow() {
+    let row = transactionTable.insertRow(-1);
+    row.classList.add("noTransaction");
+    let cell = row.insertCell(0);
+    cell.colSpan = 5;
+    cell.classList.add("fw-light", "fst-italic")
+    cell.textContent = "There is no transaction history.";
+}
 
-    // set data in local storage
-    setData(transactionId, transactionType, amount, balance, getCurrentDate());
+function removeNoTransactionRow() {
+    const row = document.querySelector(".noTransaction");
+    if (row) {
+        row.remove();
+    }
+}
 
-    transactionId++;
-} 
-
-function addTransactionToTable(id, type, amount, bal, date) {
+function addTransactionRow(id, type, amount, bal, date) {
     // create a new row at the end of the table
     let row = transactionTable.insertRow(-1);
 
@@ -111,29 +114,25 @@ function addTransactionToTable(id, type, amount, bal, date) {
     dateCell.textContent = date;
 }
 
-function addNoTransactionRow() {
-    let row = transactionTable.insertRow(-1);
-    row.classList.add("noTransaction"); // not working!!
-    let cell = row.insertCell(0);
-    cell.colSpan = 5;
-    cell.classList.add("fw-light", "fst-italic")
-    cell.textContent = "There is no transaction history.";
-}
+function createTransactionItem(transactionType, amount, balance) {
+    
+    removeNoTransactionRow();
 
-// not working!!
-function removeNoTransactionRow() {
-    const row = document.querySelector("noTransaction");
-    if (row) {
-        row.remove();
-    }
-}
+    addTransactionRow(transactionId, transactionType, amount, balance, getCurrentDate());
+
+    // set data in local storage
+    setData(transactionId, transactionType, amount, balance, getCurrentDate());
+
+    transactionId++;
+} 
+
 // ////////////////////////////////////////////////////////////////////////
 
 // LOCAL STORAGE
 
 let data = getData();
 
-data.map(item => addTransactionToTable(item.id, item.type, item.amt, item.bal, item.time));
+data.map(item => addTransactionRow(item.id, item.type, item.amt, item.bal, item.time));
 
 function getData() {
     // convert Object to String | if no data, return empty array

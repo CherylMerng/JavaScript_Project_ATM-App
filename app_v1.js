@@ -34,7 +34,7 @@ document.getElementById("depositBtn").onclick = function() {
         balanceElement.innerHTML = newBalance.toFixed(2);
 
         // Add transaction history
-        createTransactionItem("Deposit", depositAmt);
+        createTransactionItem("Deposit", depositAmt, newBalance);
     }
 
     depositAmtElement.value = "";
@@ -58,7 +58,7 @@ document.getElementById("withdrawBtn").onclick = function() {
         balanceElement.innerHTML = newBalance.toFixed(2);
 
         // Add transaction history
-        createTransactionItem("Withdraw", withdrawAmt);
+        createTransactionItem("Withdraw", withdrawAmt, newBalance);
     }
             
     withdrawAmtElement.value = "";
@@ -70,34 +70,53 @@ document.getElementById("withdrawBtn").onclick = function() {
 let transactionTable = document.getElementById("transactionTable");
 let transactionId = 1;
 
+window.onload = function() {
+    addNoTransactionRow();
+}
+
 function getCurrentDate() {
     let currentDate = new Date();
     // return currentDate.toLocaleDateString();
     return currentDate.toLocaleDateString() + " " + currentDate.toLocaleTimeString();
 }
 
-function createTransactionItem(transactionType, amount) {
-    
-    let transactionTitleElement = document.getElementById("transactionTitle");
-    transactionTitleElement.style.display = "block";
+function addNoTransactionRow() {
+    let row = transactionTable.insertRow(-1);
+    row.classList.add("noTransaction");
+    let cell = row.insertCell(0);
+    cell.colSpan = 5;
+    cell.classList.add("fw-light", "fst-italic")
+    cell.textContent = "There is no transaction history.";
+}
 
-    addTransactionToTable(transactionId++, transactionType, amount, getCurrentDate());
+function removeNoTransactionRow() {
+    const row = document.querySelector(".noTransaction");
+    if (row) {
+        row.remove();
+    }
+}
 
-} 
-
-function addTransactionToTable(id, type, amount, date) {
+function addTransactionRow(id, type, amount, bal, date) {
     // create a new row at the end of the table
     let row = transactionTable.insertRow(-1);
 
     // add cells to the row
-    let cellId = row.insertCell(0);
-    let cellType = row.insertCell(1);
-    let cellAmount = row.insertCell(2);
-    let cellDate = row.insertCell(3);
+    let idCell = row.insertCell(0);
+    let typeCell = row.insertCell(1);
+    let amtCell = row.insertCell(2);
+    let balCell = row.insertCell(3);
+    let dateCell = row.insertCell(4);
 
     // populate cell with data
-    cellId.textContent = id;
-    cellType.textContent = type;
-    cellAmount.textContent = "$" + amount.toFixed(2);
-    cellDate.textContent = date;
+    idCell.textContent = id;
+    typeCell.textContent = type;
+    amtCell.textContent = "$" + amount.toFixed(2);
+    balCell.textContent = "$" + bal.toFixed(2);
+    dateCell.textContent = date;
 }
+
+function createTransactionItem(transactionType, amount, balance) {
+    removeNoTransactionRow();
+
+    addTransactionRow(transactionId++, transactionType, amount, balance, getCurrentDate());
+} 
