@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous" defer></script>
+    <title>ATM</title>
+    
+</head>
+<body>
+
+    <div class="container w-75 mt-5">   <!-- container start -->
+
+        <div class="card"> <!-- atm card start -->
+
+            <div class="h3 card-header text-center mb-3">ATM</div>
+
+            <div class="row">   <!-- row 1 start -->
+                <div class="col mb-3 ms-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="h5 card-title text-center">BALANCE</div>
+                            <p class="card-text bg-info rounded text-center text-white p-2">
+                                $<span id="balance">0.00</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="h5 card-title text-center">DEPOSIT</div>
+                            <p class="card-text bg-success rounded text-center text-white p-2">
+                                $<span id="deposit">0.00</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-3 me-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="h5 card-title text-center">WITHDRAW</div>
+                            <p class="card-text bg-danger rounded text-center text-white p-2">
+                                $<span id="withdraw">0.00</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>  <!-- row 1 end -->
+
+            <!-- added a row for error message here -->
+            <div class="row">
+                <div class="col ms-3 me-3">
+                    <div id="errorMessage" class="alert alert-warning mt-3" style="display: none;"></div>   
+                </div>
+            </div>
+            <!-- cannot use d-none -->
+
+            <div class="row">   <!-- row 2 start -->
+                <div class="col mb-3 ms-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="depositAmt" class="mt-1 mb-1">Deposit Amount: $</label>
+                                <input type="text" id="depositAmt" class="form-control">
+                            </div>
+                            <button id="depositBtn" class="btn btn-primary btn-block mt-3">Deposit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-3 me-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="withdrawAmt" class="mt-1 mb-1">Withdraw Amount: $</label>
+                                <input type="text" id="withdrawAmt" class="form-control">
+                            </div>
+                            <button id="withdrawBtn" class="btn btn-primary btn-block mt-3">Withdraw</button>
+                            <!-- onmouseover="this.style.background='#0e72ed'" -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>  <!-- row 2 end -->
+        </div>  <!-- atm card end -->
+
+        <div id="transactionTitle" class="card mt-4">   <!-- transaction history card start --> <!-- style=" display: none;" -->
+            <div class="h6 card-header">TRANSACTION HISTORY</div>
+            <div class="card-body">
+                <table id="transactionTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>TYPE</th>
+                            <th>AMOUNT</th>
+                            <th>BALANCE</th>
+                            <th>DATE</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>  <!-- transaction history card end -->
+    
+    </div>  <!-- container end -->
+
+    <script src="app_v1.js"></script>
+    <!-- <script src="app_v2.js"></script> -->
+
+</body>
+</html>
