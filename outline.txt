@@ -12,3 +12,9 @@
 
     STEP-2
     using localStorage
+
+// LOCAL STORAGE        
+// localStorage.setItem("deposit", "200")
+// localStorage.getItem("deposit")
+// localStorage.removeItem("deposit")
+// localStorage.clear()

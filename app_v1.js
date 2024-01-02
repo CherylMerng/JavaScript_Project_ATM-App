@@ -110,8 +110,8 @@ function addTransactionRow(id, type, amount, bal, date) {
     // populate cell with data
     idCell.textContent = id;
     typeCell.textContent = type;
-    amtCell.textContent = "$" + amount.toFixed(2);
-    balCell.textContent = "$" + bal.toFixed(2);
+    amtCell.textContent = `$${amount.toFixed(2)}`;
+    balCell.textContent = `$${bal.toFixed(2)}`;
     dateCell.textContent = date;
 }
 

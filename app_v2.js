@@ -1,3 +1,8 @@
+// Added local storage
+// Used array for output (transaction history)
+
+// ////////////////////////////////////////////////////////////////////////
+
 // ERROR MESSAGE
 
 let errMsgElement = document.getElementById("errorMessage");
@@ -99,19 +104,32 @@ function addTransactionRow(id, type, amount, bal, date) {
     // create a new row at the end of the table
     let row = transactionTable.insertRow(-1);
 
-    // add cells to the row
-    let idCell = row.insertCell(0);
-    let typeCell = row.insertCell(1);
-    let amtCell = row.insertCell(2);
-    let balCell = row.insertCell(3);
-    let dateCell = row.insertCell(4);
+    let transactionList = [id, type, amount, bal, date];
+    let cellCounter = 0;
 
-    // populate cell with data
-    idCell.textContent = id;
-    typeCell.textContent = type;
-    amtCell.textContent = "$" + amount.toFixed(2);
-    balCell.textContent = "$" + bal.toFixed(2);
-    dateCell.textContent = date;
+    transactionList.forEach( ( value => {
+        if (cellCounter == 2 || cellCounter == 3) {
+            row.insertCell(cellCounter++).textContent = `$${value.toFixed(2)}`;    
+        }
+        else {
+            row.insertCell(cellCounter++).textContent = value;
+        }
+    }))
+
+    // attempt 1
+    // // add cells to the row
+    // let idCell = row.insertCell(0);
+    // let typeCell = row.insertCell(1);
+    // let amtCell = row.insertCell(2);
+    // let balCell = row.insertCell(3);
+    // let dateCell = row.insertCell(4);
+
+    // // populate cell with data
+    // idCell.textContent = id;
+    // typeCell.textContent = type;
+    // amtCell.textContent = `$${amount.toFixed(2)}`;
+    // balCell.textContent = `$${bal.toFixed(2)}`;
+    // dateCell.textContent = date;
 }
 
 function createTransactionItem(transactionType, amount, balance) {
@@ -152,11 +170,20 @@ function getIdFromData() {
         return 1;
     }
 
-    const dataCopy = [...data];
-    const lastItem = dataCopy.pop();    // remove last item from array
-    const maxId = lastItem.id;
+    // --- One way of getting last item ---
 
-    return maxId + 1;
+    // attempt 1
+    // const dataCopy = [...data];
+    // const lastItem = dataCopy.pop();    // remove last item from array
+    // const maxId = lastItem.id;
+    // return maxId + 1;
+
+    // attempt 2
+    const dataCopy = [...data];
+    return dataCopy.pop().id + 1;
+
+    // --- Alternative way of getting last item ---
+    // return data[data.length - 1].id + 1;
 }
 
 window.onload = function() {
@@ -175,11 +202,5 @@ window.onload = function() {
         addNoTransactionRow();
     }
 }
-
-// LOCAL STORAGE        
-// localStorage.setItem("deposit", "200")
-// localStorage.getItem("deposit")
-// localStorage.removeItem("deposit")
-// localStorage.clear()
 
 // ////////////////////////////////////////////////////////////////////////
