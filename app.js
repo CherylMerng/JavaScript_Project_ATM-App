@@ -7,15 +7,28 @@
 
 let errMsgElement = document.getElementById("errorMessage");
 
-function showError(message) {
-    errMsgElement.textContent = message;
-    errMsgElement.style.display = "block";
+// v2
+function err(type, msg) {
+    if (type == 1) {
+        errMsgElement.textContent = msg;
+        errMsgElement.style.display = "block";    
+    }
+    else {
+        errMsgElement.textContent = "";
+        errMsgElement.style.display = "none";
+    }
 }
 
-function clearError() {
-    errMsgElement.textContent = "";
-    errMsgElement.style.display = "none";
-}
+// v1
+// function showError(message) {
+//     errMsgElement.textContent = message;
+//     errMsgElement.style.display = "block";
+// }
+
+// function clearError() {
+//     errMsgElement.textContent = "";
+//     errMsgElement.style.display = "none";
+// }
 // ////////////////////////////////////////////////////////////////////////
 
 // CALCULATION 
@@ -31,10 +44,13 @@ document.getElementById("depositBtn").onclick = function() {
     depositAmt = parseFloat (depositAmtElement.value);
 
     if (isNaN(depositAmt) || depositAmt <= 0) {
-        showError("Please enter a valid deposit amount.");
+        err(1, "Please enter a valid deposit amount.");
+        // v1 // showError("Please enter a valid deposit amount.");
     }
-    else {                
-        clearError();
+    else { 
+        err(0, "");
+        // v1 // clearError();
+
         depositElement.innerHTML = depositAmt.toFixed(2);
         let newBalance = currentBalance + depositAmt;
         balanceElement.innerHTML = newBalance.toFixed(2);
@@ -53,13 +69,17 @@ document.getElementById("withdrawBtn").onclick = function() {
     withdrawAmt = parseFloat (withdrawAmtElement.value);
             
     if (isNaN(withdrawAmt)) {
-        showError("Please enter a valid withdraw amount.");
+        err(1, "Please enter a valid withdraw amount.")
+        // showError("Please enter a valid withdraw amount.");
     }
     else if (withdrawAmt > currentBalance) {
-        showError("Insufficient cash! Please enter a valid withdraw amount.");
+        err(1, "Insufficient cash! Please enter a valid withdraw amount.");
+        // showError("Insufficient cash! Please enter a valid withdraw amount.");
     }
     else {
-        clearError();
+        err(0, "");
+        //clearError();
+
         withdrawElement.innerHTML = withdrawAmt.toFixed(2);
         let newBalance = currentBalance - withdrawAmt;
         balanceElement.innerHTML = newBalance.toFixed(2);
@@ -80,8 +100,8 @@ let transactionId = getIdFromData();
 
 function getCurrentDate() {
     let currentDate = new Date();
-    // return currentDate.toLocaleDateString();
     return currentDate.toLocaleDateString() + " " + currentDate.toLocaleTimeString();
+    // return currentDate.toLocaleDateString();
 }
 
 function addNoTransactionRow() {
@@ -136,9 +156,10 @@ function createTransactionItem(transactionType, amount, balance) {
     
     removeNoTransactionRow();
 
+    // Show result on document
     addTransactionRow(transactionId, transactionType, amount, balance, getCurrentDate());
 
-    // set data in local storage
+    // Set data in local storage
     setData(transactionId, transactionType, amount, balance, getCurrentDate());
 
     transactionId++;
@@ -147,6 +168,21 @@ function createTransactionItem(transactionType, amount, balance) {
 // ////////////////////////////////////////////////////////////////////////
 
 // LOCAL STORAGE
+
+/*
+localStorage.setItem("deposit", "200")
+localStorage.getItem("deposit")
+localStorage.removeItem("deposit")
+localStorage.clear()
+*/
+
+/*
+const users = [
+    {"name": "Alice"},
+    {"name": "Bob"}
+]
+users.map( index => console.log(index.name) )
+*/
 
 let data = getData();
 
@@ -172,18 +208,18 @@ function getIdFromData() {
 
     // --- One way of getting last item ---
 
-    // attempt 1
+    // v1
     // const dataCopy = [...data];
     // const lastItem = dataCopy.pop();    // remove last item from array
     // const maxId = lastItem.id;
     // return maxId + 1;
 
-    // attempt 2
-    const dataCopy = [...data];
-    return dataCopy.pop().id + 1;
+    // v2
+    // const dataCopy = [...data];
+    // return dataCopy.pop().id + 1;
 
     // --- Alternative way of getting last item ---
-    // return data[data.length - 1].id + 1;
+    return data[data.length - 1].id + 1;
 }
 
 window.onload = function() {
@@ -191,7 +227,7 @@ window.onload = function() {
     let data = getData();
     
     if (data.length > 0) {        
-        // Add previous transactions to the table
+        // Add previous transactions to the table -- no need this b/c of let data = getData();
         // data.map(item => addTransactionToTable(item.id, item.type, item.amt, item.bal, item.time));
 
         // Show the last balance on the screen
